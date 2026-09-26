@@ -14,13 +14,10 @@ def read_root():
 
 @app.post("/predict", response_model=ChurnResponse)
 def predict(request: ChurnRequest):
-    # Παίρνουμε τα δεδομένα από τον χρήστη
     data_dict = request.model_dump()
     
-    # Κάνουμε την πρόβλεψη
     pred, prob = predict_churn(data_dict)
     
-    # Φτιάχνουμε ένα φιλικό μήνυμα
     msg = "Υψηλός κίνδυνος αποχώρησης" if pred == 1 else "Χαμηλός κίνδυνος"
     
     return ChurnResponse(
