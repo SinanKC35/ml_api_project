@@ -4,7 +4,6 @@ WORKDIR /code
 
 RUN apt-get update && apt-get install -y libgomp1
 
-# Αποτροπή C-level crashes του XGBoost/OpenMP σε περιβάλλον Docker
 ENV OMP_NUM_THREADS=1
 ENV KMP_DUPLICATE_LIB_OK=TRUE
 
