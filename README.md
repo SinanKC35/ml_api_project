@@ -1,69 +1,86 @@
 # 🚀 Customer Churn Prediction - MLOps REST API
 
-![Python](https://img.shields.io/badge/Python-3.9-blue.svg)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.103.1-009688.svg)
-![XGBoost](https://img.shields.io/badge/XGBoost-2.0.0-orange.svg)
-![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED.svg)
-![Postman](https://img.shields.io/badge/Postman-Tested-FF6C37.svg)
+## 🎯 Project Goal
 
-## 🎯 Ο Σκοπός του Project
-Σκοπός αυτού του project είναι η ανάδειξη της μετάβασης από την απλή Επιστήμη Δεδομένων (ένα στατικό Jupyter Notebook) στην **Παραγωγή (MLOps)**. 
+The purpose of this project is to highlight the transition from basic Data Science (a static Jupyter Notebook) to **Production (MLOps)**.
 
-Ένα μοντέλο Μηχανικής Μάθησης δεν έχει αξία αν δεν μπορεί να επικοινωνήσει με τον έξω κόσμο. Εδώ, αναπτύξαμε ένα σύστημα πρόβλεψης αποχώρησης πελατών (Customer Churn) και το μετατρέψαμε σε ένα πλήρως λειτουργικό, ανεξάρτητο Microservice. Οποιοδήποτε σύστημα (CRM, Web, Mobile App) μπορεί πλέον να του στείλει τα δεδομένα ενός πελάτη και να λάβει σε πραγματικό χρόνο την εκτίμηση κινδύνου.
+A Machine Learning model has no value if it cannot communicate with the outside world. Here, we developed a Customer Churn prediction system and transformed it into a fully functional, independent Microservice. Any system (CRM, Web, Mobile App) can now send it a customer's data and receive a real-time risk assessment.
 
+## 🏗️ What We Implemented (Step-by-Step)
 
-## 🏗️ Τι Υλοποιήσαμε (Βήμα - Βήμα)
-
-1. **Εκπαίδευση & Ασφαλής Εξαγωγή του Μοντέλου:** 
-   Εκπαιδεύσαμε έναν αλγόριθμο XGBoost. Αποφύγαμε το παραδοσιακό `pickle` format, το οποίο είναι ασταθές και προκαλεί C-level memory crashes, και αποθηκεύσαμε το μοντέλο στο εγγενές `.json` format του XGBoost για απόλυτη σταθερότητα.
-2. **Ανάπτυξη REST API:** 
-   Χρησιμοποιήσαμε το **FastAPI** για τη δημιουργία των endpoints. Ενσωματώσαμε το **Pydantic** για αυστηρό Data Validation, ώστε το σύστημα να απορρίπτει λάθος τύπους δεδομένων πριν φτάσουν στον αλγόριθμο.
-3. **Containerization:** 
-   Κλείσαμε όλη την εφαρμογή σε ένα **Docker Container**. Ρυθμίσαμε τις εξαρτήσεις συστήματος (π.χ. `libgomp1` στο Linux) και κλειδώσαμε τις εκδόσεις των βιβλιοθηκών, λύνοντας το πρόβλημα *"σε εμένα δουλεύει, σε σένα όχι"*.
-4. **Τελικές Δοκιμές (Testing):** 
-   Ελέγξαμε διεξοδικά το σύστημα μέσω του **Postman**, προσομοιώνοντας πραγματικά POST requests και διασφαλίζοντας ότι ο server διαχειρίζεται σωστά την κίνηση, επιστρέφοντας άμεσα το τελικό JSON αποτέλεσμα με Status 200 OK.
+1. **Model Training & Safe Export:**
+We trained an XGBoost algorithm. We avoided the traditional `pickle` format, which is unstable and causes C-level memory crashes, and saved the model in XGBoost's native `.json` format for absolute stability.
+2. **REST API Development:**
+We used **FastAPI** to create the endpoints. We integrated **Pydantic** for strict Data Validation, ensuring the system rejects incorrect data types before they reach the algorithm.
+3. **Containerization:**
+We packaged the entire application in a **Docker Container**. We configured the system dependencies (e.g., `libgomp1` on Linux) and pinned the library versions, solving the *"it works on my machine"* problem.
+4. **Final Testing:**
+We thoroughly tested the system via **Postman**, simulating real POST requests and ensuring the server handles traffic correctly, instantly returning the final JSON result with a Status 200 OK.
 
 ---
 
-## 📂 Δομή του Συστήματος
+## 📂 System Structure
+
+```text
 ml_api_project/
 ├── app/
-│   ├── main.py          # Η κεντρική εφαρμογή και το Routing
-│   ├── ml_service.py    # Φόρτωση του JSON μοντέλου & λογική πρόβλεψης
+│   ├── main.py          # The main application and Routing
+│   ├── ml_service.py    # Loading the JSON model & prediction logic
 │   └── schemas.py       # Pydantic validation schemas
-├── models/              # Φάκελος εκπαιδευμένων μοντέλων (Git Ignored)
-├── train.py             # Script εκπαίδευσης XGBoost
-├── Dockerfile           # Οδηγίες πακεταρίσματος
-└── requirements.txt     # Βιβλιοθήκες και dependencies
+├── models/              # Trained models folder (Git Ignored)
+├── train.py             # XGBoost training script
+├── Dockerfile           # Packaging instructions
+└── requirements.txt     # Libraries and dependencies
 
-⚙️ Οδηγίες Εκτέλεσης (Πώς να το τρέξετε)
-Βήμα 1: Τοπική παραγωγή του εκπαιδευμένου μοντέλου
+```
 
+## ⚙️ Execution Instructions (How to run it)
+
+**Step 1: Local generation of the trained model**
+
+```bash
 python3 train.py
 
-Βήμα 2: Χτίσιμο και Εκκίνηση του Docker Container
+```
 
-Πρωτα
+**Step 2: Build and Start the Docker Container**
 
+First:
+
+```bash
 sudo docker build -t churn-ml-api .
 
-Μετα 
+```
 
+Then:
+
+```bash
 sudo docker run -p 8000:8000 churn-ml-api
 
-Όταν τελειωσει , παμε στο Google και γραφουμε http://localhost:8000/predict
+```
 
-Όταν το Docker ξεκινήσει, το API ακούει στη διαδρομή POST http://localhost:8000/predict. Μπορείτε να το τεστάρετε μέσω Postman ή Swagger UI (στο /docs).
+Once finished, go to your browser and type: `http://localhost:8000/predict`
 
-Τα δεδομένα εισόδου (Request Body - JSON):
+When Docker starts, the API listens on the `POST http://localhost:8000/predict` route. You can test it via Postman or Swagger UI (at `/docs`).
+
+**Input data (Request Body - JSON):**
+
+```json
 {
   "age": 35,
   "tenure": 24,
   "monthly_charges": 50.5
 }
-Το αποτέλεσμα που επιστρέφει το API (Response 200 OK):
+
+```
+
+**The result returned by the API (Response 200 OK):**
+
+```json
 {
     "prediction": 0,
     "probability": 0.005846,
-    "message": "Χαμηλός κίνδυνος"
+    "message": "Low risk"
 }
+
+```
